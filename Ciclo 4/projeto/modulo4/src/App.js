@@ -4,14 +4,11 @@ import { Cliente } from './pages/Cliente/Cliente';
 import {VisualizarCliente} from './pages/Cliente/VisualizarCliente';
 import { Servico } from './pages/Servico/Servico';
 import {VisualizarServico} from './pages/Servico/VisualizarServico';
-import { Pedido } from './pages/Pedido/Index';
+import { Pedido } from './pages/Pedido';
 import {VisualizarPedido} from './pages/Pedido/VisualizarPedido';
 import { Menu } from './components/Menu';
 import { Cadastrar } from "./pages/Servico/Cadastrar";
 import { Editar } from "./pages/Servico/Editar";
-
-
-
 
 
 function App() {

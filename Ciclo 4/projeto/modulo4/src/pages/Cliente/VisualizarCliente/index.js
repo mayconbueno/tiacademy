@@ -3,6 +3,7 @@ import { Alert } from "bootstrap";
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { Container, Table } from "reactstrap";
+import { api } from "../../../config";
 
 export const VisualizarCliente = () => {
 
