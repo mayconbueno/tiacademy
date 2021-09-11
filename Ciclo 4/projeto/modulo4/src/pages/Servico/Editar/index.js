@@ -63,7 +63,7 @@ export const Editar = (props) => {
                         <Link to={"/visualizarservico/"}
                             className="btn btn-outline-primary btn-sm m-1">Listar</Link>
                         <Link to={"/servico/" + id}
-                            className="btn btn-outline-primary btn-sm m-1">COnsultar</Link>
+                            className="btn btn-outline-primary btn-sm m-1">Consultar</Link>
                     </div>
                 </div>
                 <hr className="m-1" />
