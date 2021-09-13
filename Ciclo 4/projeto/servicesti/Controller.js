@@ -55,6 +55,7 @@ app.get('/listaservicos', async(req,res)=>{
 
 });
 
+
 app.get('/listapedidos', async(req,res)=>{
     await pedido.findAll({
         raw:true
@@ -101,22 +102,6 @@ app.get('/cliente/:id', async(req,res)=>{
         });
     });
 });
-
-app.get('/pedido/:id', async(req,res)=>{
-    pedido.findByPk(req.params.id)
-    .then(pedido =>{
-        return res.json({
-            error: false,
-            pedido
-        });
-    }).catch(function(erro){
-        return res.status(400).json({
-            error:true,
-            message: "Código não cadastrado!"
-        });
-    });
-});
-
 
 //get = importar da base de dados / linha de aplicação
 //post = inserir via formulário
@@ -182,14 +167,38 @@ app.get('/qtdpedidos', async(req,res)=>{
 
 //desafio--------total gasto por cliente
 app.get('/pedido/:id', async (req,res)=>{
-    await pedido.sum('valor', {where: { ClienteId: req.params.id} })
-    .then((pedido)=>{
+    pedido.findByPk(req.params.id,  {
+        include:[{
+            all:true
+        }]
+    })
+    .then(pedido=>{
         return res.json({
+            error: false,
             pedido
+        });
+    }).catch(function(erro){
+        return res.status(400).json({
+            error:true,
+            message: "Código não Cadastrado"
+        });
+    }); 
+});
+
+app.get('/servico/:id', async(req,res)=>{
+    servico.findByPk(req.params.id)
+    .then(servico=>{
+        return res.json({
+            error: false,
+            servico
+        });
+    }).catch(function(erro){
+            return res.status(400).json({
+            error: true,
+            message: "Código não cadastrado!"
         });
     });
 });
-
 
 //------------------------aula 5 - dia 31/08 ---------------------------------
 
@@ -254,6 +263,22 @@ app.get('/buscarservico', async(req,res)=>{
     });
 });
 
+app.get('/servicocliente',async(req,res)=>{
+    //    pedido.findAll({  // Traz todos os pedidos deste cliente
+        pedido.findOne({    // Traz o primeiro pedido deste cliente
+            where:{ ClienteId:{[Op.eq]: req.body.ClienteId}}
+        }).then(pedidos=>{
+            return res.json({
+                error:false,
+                pedidos
+            });
+        }).catch(function(erro){
+            return res.status(400).json({
+                error: true,
+                message: "Cliente não está cadastrado"
+            });
+        });
+    });
 
 //editar cliente usando put
 app.put('/editarcliente/:id', (req,res) =>{
@@ -326,10 +351,27 @@ app.delete('/apagarservico/:id',(req,res)=>{
     }).catch(function(erro){
         return res.status(400).json({
             error: true,
-            message: "Não foi possível excluir o cliente."
+            message: "Não foi possível excluir o serviço."
         });
     });
 });
+
+app.delete('/apagarpedido/:id', (req,res)=>{
+    pedido.destroy({
+        where:{id: req.params.id}
+    }).then(function(){
+        return res.json({
+            error: false,
+            message: 'Pedido excluido com sucesso!'
+        });
+    }).catch(function(){
+        return res.status(400).json({
+            error: true,
+            message: 'Não foi possivel excluir o serviço.'
+        });
+    });
+});
+
 
 let port=process.env.PORT || 3001;
 
